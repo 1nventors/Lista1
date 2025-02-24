@@ -22,36 +22,42 @@
             <pre><code>
 using System;
 
-double AproximarPi(double tolerancia = 1e-4)
+class Program
 {
-    double piReal = Math.PI; // Referência
-    double piAprox = 0;
-    int n = 0;
-
-    while (true)
+    static double AproximarPi(double tolerancia = 1e-4)
     {
-        double termo = Math.Pow(16, -n) *
-                      ((4.0 / (8 * n + 1)) - (2.0 / (8 * n + 4)) -
-                       (1.0 / (8 * n + 5)) - (1.0 / (8 * n + 6)));
+        double piReal = Math.PI; // Referência
+        double piAprox = 0;
+        int n = 0;
 
-        piAprox += termo;
+        while (true)
+        {
+            double termo = Math.Pow(16, -n) *
+                          ((4.0 / (8 * n + 1)) - (2.0 / (8 * n + 4)) -
+                           (1.0 / (8 * n + 5)) - (1.0 / (8 * n + 6)));
 
-        double erroAbs = Math.Abs(piAprox - piReal);
-        double erroRel = erroAbs / Math.Abs(piReal);
+            piAprox += termo;
 
-        Console.WriteLine($"Iteração {n + 1}: π ≈ {piAprox} | Erro Absoluto: {erroAbs} | Erro Relativo: {erroRel}");
+            double erroAbs = Math.Abs(piAprox - piReal);
+            double erroRel = erroAbs / Math.Abs(piReal);
 
-        if (erroAbs &lt; tolerancia)
-            break;
+            Console.WriteLine($"Iteração {n + 1}: π ≈ {piAprox} | Erro Absoluto: {erroAbs} | Erro Relativo: {erroRel}");
 
-        n++;
+            if (erroAbs &lt; tolerancia)
+                break;
+
+            n++;
+        }
+
+        return piAprox;
     }
 
-    return piAprox;
+    static void Main()
+    {
+        Console.WriteLine("=== Aproximação de π com Erros ===");
+        AproximarPi();
+    }
 }
-
-Console.WriteLine("=== Aproximação de π com Erros ===");
-AproximarPi();
             </code></pre>
             <p>Executando o código, ele resulta na saída:
                 <code>
@@ -72,26 +78,32 @@ Iteração 3: π ≈ 3,1415873903465816 | Erro Absoluto: 5,263243211484081E-06 |
             <pre><code>
 using System;
 
-double IteracaoPontoFixo(double a, double x0 = 1, double tol = 1e-12, int maxIter = 100)
+class Program
 {
-    double x = x0;
-    for (int i = 0; i &lt; maxIter; i++)
+    static double IteracaoPontoFixo(double a, double x0 = 1, double tol = 1e-12, int maxIter = 100)
     {
-        double proX = (x * (x * x + 3 * a)) / (3 * x * x + a);
-        Console.WriteLine($"Iteração {i + 1}: x = {proX}");
+        double x = x0;
+        for (int i = 0; i &lt; maxIter; i++)
+        {
+            double proX = (x * (x * x + 3 * a)) / (3 * x * x + a);
+            Console.WriteLine($"Iteração {i + 1}: x = {proX}");
 
-        if (Math.Abs(proX - x) &lt; tol)
-            return proX;
+            if (Math.Abs(proX - x) &lt; tol)
+                return proX;
 
-        x = proX;
+            x = proX;
+        }
+        return x;
     }
-    return x;
-}
 
-Console.WriteLine("=== Questão 7: Iteração de Ponto Fixo ===");
-double a = 2;
-double resultadoRaiz = IteracaoPontoFixo(a);
-Console.WriteLine($"Aproximação da raiz quadrada de {a}: {resultadoRaiz}\n");
+    static void Main()
+    {
+        Console.WriteLine("=== Questão 7: Iteração de Ponto Fixo ===");
+        double a = 2;
+        double resultadoRaiz = IteracaoPontoFixo(a);
+        Console.WriteLine($"Aproximação da raiz quadrada de {a}: {resultadoRaiz}\n");
+    }
+}
             </code></pre>
             <p>Executando o código, ele resulta na saída:
                 <code>
