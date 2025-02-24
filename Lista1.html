@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questões 5 e 7</title>
+    <link rel="stylesheet" href="Lista1.css">
+</head>
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="#questao5">Questão 5</a></li>
+            <li><a href="#questao7">Questão 7</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Resolução das Questões 5 e 7</h1>
+
+        <section id="questao5">
+            <h2>Questão 5</h2>
+            <p>Aproximação de π pela série.</p>
+            <pre><code>
+using System;
+
+double AproximarPi(double tolerancia = 1e-4)
+{
+    double piReal = Math.PI; // Referência
+    double piAprox = 0;
+    int n = 0;
+
+    while (true)
+    {
+        double termo = Math.Pow(16, -n) *
+                      ((4.0 / (8 * n + 1)) - (2.0 / (8 * n + 4)) -
+                       (1.0 / (8 * n + 5)) - (1.0 / (8 * n + 6)));
+
+        piAprox += termo;
+
+        double erroAbs = Math.Abs(piAprox - piReal);
+        double erroRel = erroAbs / Math.Abs(piReal);
+
+        Console.WriteLine($"Iteração {n + 1}: π ≈ {piAprox} | Erro Absoluto: {erroAbs} | Erro Relativo: {erroRel}");
+
+        if (erroAbs &lt; tolerancia)
+            break;
+
+        n++;
+    }
+
+    return piAprox;
+}
+
+Console.WriteLine("=== Aproximação de π com Erros ===");
+AproximarPi();
+            </code></pre>
+            <p>Executando o código, ele resulta na saída:
+                <code>
+                    === Aproximação de π com Erros ===
+                    <br>
+Iteração 1: π ≈ 3,1333333333333333 | Erro Absoluto: 0,008259320256459812 | Erro Relativo: 0,0026290232907892
+<br>
+Iteração 2: π ≈ 3,1414224664224664 | Erro Absoluto: 0,00017018716732675188 | Erro Relativo: 5,417225786172013E-05
+<br>
+Iteração 3: π ≈ 3,1415873903465816 | Erro Absoluto: 5,263243211484081E-06 | Erro Relativo: 1,6753423476051068E-06
+                </code>
+            </p>
+        </section>
+
+        <section id="questao7">
+            <h2>Questão 7</h2>
+            <h3>Iteração de Ponto Fixo</h3>
+            <pre><code>
+using System;
+
+double IteracaoPontoFixo(double a, double x0 = 1, double tol = 1e-12, int maxIter = 100)
+{
+    double x = x0;
+    for (int i = 0; i &lt; maxIter; i++)
+    {
+        double proX = (x * (x * x + 3 * a)) / (3 * x * x + a);
+        Console.WriteLine($"Iteração {i + 1}: x = {proX}");
+
+        if (Math.Abs(proX - x) &lt; tol)
+            return proX;
+
+        x = proX;
+    }
+    return x;
+}
+
+Console.WriteLine("=== Questão 7: Iteração de Ponto Fixo ===");
+double a = 2;
+double resultadoRaiz = IteracaoPontoFixo(a);
+Console.WriteLine($"Aproximação da raiz quadrada de {a}: {resultadoRaiz}\n");
+            </code></pre>
+            <p>Executando o código, ele resulta na saída:
+                <code>
+                    === Questão 7: Iteração de Ponto Fixo ===
+                    <br>
+Iteração 1: x = 1,4
+<br>
+Iteração 2: x = 1,4142131979695434
+<br>
+Iteração 3: x = 1,414213562373095
+<br>
+Iteração 4: x = 1,4142135623730951
+<br>
+Aproximação da raiz quadrada de 2: 1,4142135623730951
+                </code>
+            </p>
+        </section>
+        <footer>
+            link para Collab e Drive: <a href="https://drive.google.com/drive/folders/1DClCvIA3w7xjVwtnE0LNHbbhwp_aVsjl?usp=drive_link">Aqui</a>
+        </footer>
+    </main>
+</body>
+</html>
