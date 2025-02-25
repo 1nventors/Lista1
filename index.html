@@ -70,6 +70,9 @@ Iteração 2: π ≈ 3,1414224664224664 | Erro Absoluto: 0,00017018716732675188 
 Iteração 3: π ≈ 3,1415873903465816 | Erro Absoluto: 5,263243211484081E-06 | Erro Relativo: 1,6753423476051068E-06
                 </code>
             </p>
+            <p>
+                Utilizamos a fórmula BBP (Bailey–Borwein–Plouffe) para calcular uma aproximação de π e compará-la com o valor de referência fornecido por Math.PI da biblioteca .NET do C#, a cada iteração, o algoritmo calcula um novo termo da série e atualiza a soma que representa pi, também são computados o erro absoluto (diferença entre o valor aproximado e o real) e o erro relativo (erro absoluto em relação ao valor real), permitindo a precisão da aproximação. O processo continua até que o erro absoluto seja menor que a tolerância especificada, garantindo uma aproximação satisfatória de pi.
+            </p>
         </section>
 
         <section id="questao7">
@@ -119,6 +122,9 @@ Iteração 4: x = 1,4142135623730951
 <br>
 Aproximação da raiz quadrada de 2: 1,4142135623730951
                 </code>
+            </p>
+            <p>
+                O programa utiliza a função dada no problema para realizar uma série de iterações, aplicando inicialmente o valor x0 = 1, a cada iteração o valor de x é atualizado com o resultado da função e comparado com o valor anterior, caso a diferença entre os dois for menor que a tolerância especificada (1e-12), a iteração é finalizada e o valor é retornado como a aproximação da raiz quadrada de a, caso não for menor que a tolerância, o processo continua utilizando o resultado da iteração anterior como o novo valor de x, até atingir a tolerância ou o número máximo de iterações. O código implementa o método de ponto fixo para encontrar aproximações sucessivas da solução e utiliza um critério de tolerância para garantir a convergência dentro de um erro aceitável.
             </p>
         </section>
         <footer>
