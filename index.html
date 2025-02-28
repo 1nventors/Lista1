@@ -1,25 +1,294 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Questões 5 e 7</title>
-    <link rel="stylesheet" href="Lista1.css">
-</head>
-<body>
+    <link rel="stylesheet" href="Lista1.css" />
+  </head>
+  <body>
     <nav id="navbar">
-        <ul>
-            <li><a href="#questao5">Questão 5</a></li>
-            <li><a href="#questao7">Questão 7</a></li>
-        </ul>
+      <ul>
+        <li><a href="#questao1">Questão 1</a></li>
+        <li><a href="#questao2">Questão 2</a></li>
+        <li><a href="#questao3">Questão 3</a></li>
+        <li><a href="#questao4">Questão 4</a></li>
+        <li><a href="#questao5">Questão 5</a></li>
+        <li><a href="#questao6">Questão 6</a></li>
+        <li><a href="#questao7">Questão 7</a></li>
+        <li><a href="#questao8">Questão 8</a></li>
+        <li><a href="#questao9">Questão 9</a></li>
+      </ul>
     </nav>
     <main>
-        <h1>Resolução das Questões 5 e 7</h1>
+      <section id="questao1">
+        <h2>Questão 1</h2>
+        <pre><code>
+import numpy as np
 
-        <section id="questao5">
-            <h2>Questão 5</h2>
-            <p>Aproximação de π pela série.</p>
-            <pre><code>
+Valormax = (2 - np.finfo(float).eps) * 2**1023
+print(f"Maior número representável (Valormax): {Valormax:e}")
+
+Valormin = 1.0 * 2**-1022
+print(f"Menor número representável normalizado (Valormin): {Valormin:e}")
+
+u = 1.0
+while 1.0 + u != 1.0:
+    u *= 0.5
+epsilon = 2 * u
+print(f"Epsilon da máquina: {epsilon:e}")
+
+Valores_X = [1e-15, 1e+15]
+Valor_exato = 1
+
+for x in Valores_X:
+    f_expre = (1 + x - 1) / x
+    erro_absoluto = abs(Valor_exato - f_expre)
+    erro_relativo = erro_absoluto / abs(Valor_exato)
+
+    print(f"\nPara x = {x:e}:")
+    print(f"Valor aproximado: {f_expre:e}")
+    print(f"Erro absoluto: {erro_absoluto:e}")
+    print(f"Erro relativo: {erro_relativo:e}")
+
+print("\nAgora, a solução alternativa")
+for x in Valores_X:
+    f_expre = 1
+    erro_absoluto = abs(Valor_exato - f_expre)
+    erro_relativo = erro_absoluto / abs(Valor_exato)
+
+    print(f"\nPara x = {x:e}:")
+    print(f"Valor aproximado: {f_expre:e}")
+    print(f"Erro absoluto: {erro_absoluto:e}")
+    print(f"Erro relativo: {erro_relativo:e}")
+            </code></pre>
+        <p>
+          O código analisa os limites da precisão numérica ao determinar os
+          valores máximo e mínimo representáveis no sistema de ponto flutuante,
+          além de calcular o epsilon da máquina, o código também avalia o erro
+          absoluto e relativo em uma expressão matemática para diferentes
+          valores de x. Os resultados mostram que, para x igual a 1e-15, a
+          expressão mantém uma precisão aceitável, mas para x igual a 1e+15, o
+          erro relativo se torna significativo. Isso acontece porque, devido às
+          limitações da aritmética de ponto flutuante, valores muito pequenos
+          são representados com maior precisão do que valores muito grandes,
+          onde os erros de arredondamento são mais evidentes, o que acaba
+          destacando a precisão do auxílio de códigos para a resolução de
+          problemas, especificando os erros e aproximações feitas ao longo das
+          contas.
+        </p>
+      </section>
+
+      <section id="questao2">
+        <h2>Questão 2</h2>
+        <pre><code>
+def f(x):
+    return x**7 - 7*x**6 + 21*x**5 - 35*x**4 + 35*x**3 - 21*x**2 + 7*x - 1
+
+def bissecção(f, a, b, tol=1e-10, max_iter=100):
+    if f(a) * f(b) >= 0:
+        print("ERRO! f(a) e f(b) precisam ter sinais opostos.")
+        return None
+
+    for i in range(max_iter):
+        m = (a + b) / 2
+        if (b - a) / 2 &lt; tol or abs(f(m)) &lt; tol:
+            return m
+        if f(m) * f(a) &lt; 0:
+            b = m
+        else:
+            a = m
+    return m
+
+raiz_b1 = bissecção(f, 1 - 2 * 10**-8, 1 + 2 * 10**-8)
+print("Raiz encontrada pelo método da bissecção:", raiz_b1)
+
+def bissecção(f, a, b, tol=1e-10, max_iter=100):
+    if f(a) * f(b) >= 0:
+        print("ERRO! f(a) e f(b) precisam ter sinais opostos.")
+        return None
+
+    iter = 0
+    while (b - a) / 2 > tol and iter &lt; max_iter:
+        m = (a + b) / 2
+        if f(m) == 0:
+            return m
+        if f(a) * f(m) &lt; 0:
+            b = m
+        else:
+            a = m
+        iter += 1
+    return (a + b) / 2
+
+raiz_b2 = bissecção(f, 1 - 2 * 10**-8, 1 + 2 * 10**-8)
+print("Raiz encontrada pelo método da bissecção:", raiz_b2)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**7 - 7*x**6 + 21*x**5 - 35*x**4 + 35*x**3 - 21*x**2 + 7*x - 1
+
+a = 1 - 2 * 10**-8
+b = 1 + 2 * 10**-8
+
+valores_x = np.linspace(a, b, 401)
+valores_y = f(valores_x)
+
+plt.figure(figsize=(10,6))
+plt.plot(valores_x, valores_y, label="f(x)")
+plt.title("Comportamento da função f(x)", fontsize=20)
+plt.xlabel("x", fontsize=15)
+plt.ylabel("f(x)", fontsize=15)
+plt.grid(True)
+plt.legend()
+plt.show()
+            </code></pre>
+        <p>
+          O código implementa o método da bissecção para encontrar raízes da
+          função f(x), um polinômio de grau 7, a busca pela raiz ocorre em um
+          intervalo muito pequeno ao redor de x = 1, garantindo precisão do
+          gráfico e dos pontos, o método verifica se os valores da função nos
+          extremos do intervalo possuem sinais opostos e reduz iterativamente o
+          intervalo até atingir a tolerância especificada. Após uma breve
+          análise é possível notar que a função pode ser reescrita como (x -
+          1)^7, isso implica que a função é extremamente sensível a pequenas
+          variações em x, levando a problemas numéricos, como cancelamento
+          catastrófico, essa instabilidade pode dificultar a obtenção de
+          resultados precisos por métodos numéricos padrão.
+        </p>
+      </section>
+
+      <section id="questao3">
+        <h2>Questão 3</h2>
+        <pre><code>
+import numpy as np
+import matplotlib.pyplot as plt
+
+I0 = (1 / np.exp(1)) * (np.exp(1) - 1)
+n = 0
+maximo_iter = int(1e30)
+valores = []
+
+print("Iteração | I(n)")
+print("----------------------")
+
+while abs(I0) &lt; maximo_iter:
+    print(f"{n:8d} | {I0:e}")
+    valores.append(I0)
+
+    In = 1 - (n + 1) * I0
+    n += 1
+    I0 = In
+            </code></pre>
+
+        <pre><code>
+import numpy as np
+import matplotlib.pyplot as plt
+
+I0 = (1 / np.exp(1)) * (np.exp(1) - 1)
+tol = 5e-2
+n = 0
+maximo_iter = 1e30
+valores = []
+
+print("Iteração | I(n)")
+
+while abs(I0) > tol and n &lt; maximo_iter:
+    print(f"{n:8d} | {I0:e}")
+    valores.append(I0)
+
+    In = 1 - (n + 1) * I0
+    n += 1
+    I0 = In
+
+if abs(I0) &lt;= tol:
+    print(f"A sucessão convergiu para {I0:e} após {n} iterações.")
+else:
+    print(f"A sucessão não convergiu dentro do limite de {maximo_iter} iterações.")
+
+plt.figure(figsize=(8, 5))
+plt.plot(range(len(valores)), valores, '-o', markersize=5)
+plt.xlabel('Iteração n')
+plt.ylabel('I(n)')
+plt.title('Evolução da Sucessão')
+plt.grid()
+plt.show()
+            </code></pre>
+        <p>
+          O código implementa uma sucessão recursiva, onde o primeiro valor é
+          dado por I0 e os próximos valores são calculados pela fórmula In = 1 -
+          (n + 1) * I0, o programa foi feito de duas formas, na qual a primeira
+          não tem critério de parada, então continua calculando os valores da
+          sucessão indefinidamente e a segunda versão define uma tolerância de
+          0.05, ou seja, a iteração para quando o valor da sucessão ficar menor
+          que esse limite, permitindo verificar se a sequência realmente
+          converge para zero, após a análise é possível notar que os valores de
+          In diminuem conforme n cresce, mostrando que a sequência realmente
+          tende a zero, como esperado.
+        </p>
+      </section>
+
+      <section id="questao4">
+        <h2>Questão 4</h2>
+        <pre><code>
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import newton, bisect
+
+def estimar_pi(n):
+    x = np.random.uniform(0, 1, n)
+    y = np.random.uniform(0, 1, n)
+
+    dentro_do_circulo = (x**2 + y**2) &lt;= 1
+    m = np.sum(dentro_do_circulo)
+    pi_estimado = 4 * m / n
+
+    return pi_estimado
+
+def calcular_erro(n_valores):
+    erros = []
+    valores_pi = []
+    for n in n_valores:
+        pi_estimado = estimar_pi(n)
+        valores_pi.append(pi_estimado)
+        erro = abs(np.pi - pi_estimado)
+        erros.append(erro)
+    return valores_pi, erros
+
+n_valores = np.logspace(2, 6, num=20, dtype=int)
+valores_pi, erros = calcular_erro(n_valores)
+
+plt.figure(figsize=(8, 6))
+plt.plot(n_valores, erros, marker='o', linestyle='-', label='Erro absoluto')
+plt.axhline(y=0, color='r', linestyle='--', label='Erro zero')
+plt.xscale('log')
+plt.yscale('log')
+plt.xlabel('Número de pontos (n)')
+plt.ylabel('Erro absoluto')
+plt.title('Evolução do erro na estimativa de π')
+plt.legend()
+plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+plt.show()
+            </code></pre>
+        <p>
+          O código utiliza o método de Monte Carlo para estimar o valor de pi,
+          que gera pontos aleatórios dentro de um quadrado de lado 1 e verifica
+          quantos desses pontos estão dentro de um círculo de raio 1, a
+          estimativa de pi é obtida multiplicando por 4 a razão entre os pontos
+          dentro do círculo e o total de pontos gerados, o código calcula o erro
+          absoluto da estimativa comparando com o valor real de pi, para ver
+          qual foi a imprecisão e para diferentes quantidades de pontos, ele
+          armazena os erros e gera um gráfico (em escala logarítmica) mostrando
+          como a precisão da estimativa melhora à medida que o número de
+          amostras aumenta.
+        </p>
+      </section>
+
+      <section id="questao5">
+        <h2>Questão 5</h2>
+        <p>Aproximação de π pela série.</p>
+        <pre><code>
 using System;
 
 class Program
@@ -59,26 +328,90 @@ class Program
     }
 }
             </code></pre>
-            <p>Executando o código, ele resulta na saída:
-                <code>
-                    === Aproximação de π com Erros ===
-                    <br>
-Iteração 1: π ≈ 3,1333333333333333 | Erro Absoluto: 0,008259320256459812 | Erro Relativo: 0,0026290232907892
-<br>
-Iteração 2: π ≈ 3,1414224664224664 | Erro Absoluto: 0,00017018716732675188 | Erro Relativo: 5,417225786172013E-05
-<br>
-Iteração 3: π ≈ 3,1415873903465816 | Erro Absoluto: 5,263243211484081E-06 | Erro Relativo: 1,6753423476051068E-06
-                </code>
-            </p>
-            <p>
-                Utilizamos a fórmula BBP (Bailey–Borwein–Plouffe) para calcular uma aproximação de π e compará-la com o valor de referência fornecido por Math.PI da biblioteca .NET do C#, a cada iteração, o algoritmo calcula um novo termo da série e atualiza a soma que representa pi, também são computados o erro absoluto (diferença entre o valor aproximado e o real) e o erro relativo (erro absoluto em relação ao valor real), permitindo a precisão da aproximação. O processo continua até que o erro absoluto seja menor que a tolerância especificada, garantindo uma aproximação satisfatória de pi.
-            </p>
-        </section>
+        <p>
+          Executando o código, ele resulta na saída:
+          <code>
+            === Aproximação de π com Erros ===
+            <br />
+            Iteração 1: π ≈ 3,1333333333333333 | Erro Absoluto:
+            0,008259320256459812 | Erro Relativo: 0,0026290232907892
+            <br />
+            Iteração 2: π ≈ 3,1414224664224664 | Erro Absoluto:
+            0,00017018716732675188 | Erro Relativo: 5,417225786172013E-05
+            <br />
+            Iteração 3: π ≈ 3,1415873903465816 | Erro Absoluto:
+            5,263243211484081E-06 | Erro Relativo: 1,6753423476051068E-06
+          </code>
+        </p>
+        <p>
+          Utilizamos a fórmula BBP (Bailey–Borwein–Plouffe) para calcular uma
+          aproximação de π e compará-la com o valor de referência fornecido por
+          Math.PI da biblioteca .NET do C#, a cada iteração, o algoritmo calcula
+          um novo termo da série e atualiza a soma que representa pi, também são
+          computados o erro absoluto (diferença entre o valor aproximado e o
+          real) e o erro relativo (erro absoluto em relação ao valor real),
+          permitindo a precisão da aproximação. O processo continua até que o
+          erro absoluto seja menor que a tolerância especificada, garantindo uma
+          aproximação satisfatória de pi.
+        </p>
+      </section>
 
-        <section id="questao7">
-            <h2>Questão 7</h2>
-            <h3>Iteração de Ponto Fixo</h3>
-            <pre><code>
+      <section id="questao6">
+        <h2>Questão 6</h2>
+        <pre><code>
+import numpy as np
+from scipy.optimize import newton
+
+l2 = 10
+l1 = 8
+gamma = (3 * np.pi) / 5
+
+def f(alpha):
+    return (l2 * np.cos(np.pi - gamma - alpha) / np.sin(np.pi - gamma - alpha)**2) - \
+           (l1 * np.cos(alpha) / np.sin(alpha)**2)
+
+def df(alpha):
+    term1 = l2 * ((-np.sin(np.pi - gamma - alpha) * np.sin(np.pi - gamma - alpha)**2 - 
+                   2 * np.cos(np.pi - gamma - alpha) * np.sin(np.pi - gamma - alpha)) / 
+                  np.sin(np.pi - gamma - alpha)**4)
+
+    term2 = l1 * ((-np.sin(alpha) * np.sin(alpha)**2 - 2 * np.cos(alpha) * np.sin(alpha)) / 
+                  np.sin(alpha)**4)
+
+    return term1 - term2
+
+alpha_guess = 0.5
+alpha_solution = newton(f, alpha_guess, df, tol=1e-6)
+
+L = (l2 / np.sin(np.pi - gamma - alpha_solution)) + (l1 / np.sin(alpha_solution))
+
+print(f"Valor de α encontrado: {alpha_solution:.6f} rad")
+print(f"Comprimento máximo da barra L: {L:.6f}")
+
+print("Outro método que pode ser usado: ")
+print("O método da bissecção pode ser usado como alternativa. Ele garante convergência, pois busca um intervalo onde a função muda de sinal, mas é mais lento que Newton-Raphson.")
+
+print("Diferença entre eles: ")
+print("Newton-Raphson: Rápido, mas requer um bom chute inicial e pode falhar se a função não for bem comportada.")
+print("Bissecção: Mais seguro, pois sempre converge se houver uma raiz no intervalo, mas é mais lento.")
+            </code></pre>
+        <p>
+          O código resolve um problema de otimização utilizando o método de
+          Newton-Raphson para encontrar o valor de alpha que satisfaz a equação
+          dada, e define a função f(alpha) e sua derivada df(alpha) e usa um
+          valor inicial para encontrar a solução, após determinar alpha, calcula
+          o comprimento máximo da barra L com base na solução encontrada, o
+          método da bissecção pode ser usado como alternativa, que é mais
+          seguro, já que sempre converge se houver uma raiz no intervalo, porém
+          é mais lento do que Newton-Raphson que é rápido, mas depende de um bom
+          chute inicial e pode falhar se a função não for bem comportada.
+        </p>
+      </section>
+
+      <section id="questao7">
+        <h2>Questão 7</h2>
+        <h3>Iteração de Ponto Fixo</h3>
+        <pre><code>
 using System;
 
 class Program
@@ -108,28 +441,310 @@ class Program
     }
 }
             </code></pre>
-            <p>Executando o código, ele resulta na saída:
-                <code>
-                    === Questão 7: Iteração de Ponto Fixo ===
-                    <br>
-Iteração 1: x = 1,4
-<br>
-Iteração 2: x = 1,4142131979695434
-<br>
-Iteração 3: x = 1,414213562373095
-<br>
-Iteração 4: x = 1,4142135623730951
-<br>
-Aproximação da raiz quadrada de 2: 1,4142135623730951
-                </code>
-            </p>
-            <p>
-                O programa utiliza a função dada no problema para realizar uma série de iterações, aplicando inicialmente o valor x0 = 1, a cada iteração o valor de x é atualizado com o resultado da função e comparado com o valor anterior, caso a diferença entre os dois for menor que a tolerância especificada (1e-12), a iteração é finalizada e o valor é retornado como a aproximação da raiz quadrada de a, caso não for menor que a tolerância, o processo continua utilizando o resultado da iteração anterior como o novo valor de x, até atingir a tolerância ou o número máximo de iterações. O código implementa o método de ponto fixo para encontrar aproximações sucessivas da solução e utiliza um critério de tolerância para garantir a convergência dentro de um erro aceitável.
-            </p>
-        </section>
-        <footer>
-            link para Collab e Drive: <a href="https://drive.google.com/drive/folders/1DClCvIA3w7xjVwtnE0LNHbbhwp_aVsjl?usp=drive_link" target="_blank">Aqui</a> e a lista completa com as outras questões, podem ser localizadas clicando <a href="https://list1numericalcalculus.streamlit.app" target="_blank"> Aqui </a>
-        </footer>
+        <p>
+          Executando o código, ele resulta na saída:
+          <code>
+            === Questão 7: Iteração de Ponto Fixo ===
+            <br />
+            Iteração 1: x = 1,4
+            <br />
+            Iteração 2: x = 1,4142131979695434
+            <br />
+            Iteração 3: x = 1,414213562373095
+            <br />
+            Iteração 4: x = 1,4142135623730951
+            <br />
+            Aproximação da raiz quadrada de 2: 1,4142135623730951
+          </code>
+        </p>
+        <p>
+          O programa utiliza a função dada no problema para realizar uma série
+          de iterações, aplicando inicialmente o valor x0 = 1, a cada iteração o
+          valor de x é atualizado com o resultado da função e comparado com o
+          valor anterior, caso a diferença entre os dois for menor que a
+          tolerância especificada (1e-12), a iteração é finalizada e o valor é
+          retornado como a aproximação da raiz quadrada de a, caso não for menor
+          que a tolerância, o processo continua utilizando o resultado da
+          iteração anterior como o novo valor de x, até atingir a tolerância ou
+          o número máximo de iterações. O código implementa o método de ponto
+          fixo para encontrar aproximações sucessivas da solução e utiliza um
+          critério de tolerância para garantir a convergência dentro de um erro
+          aceitável.
+        </p>
+      </section>
+
+      <section id="questao8">
+        <h2>Questão 8</h2>
+        <pre><code>
+          import numpy as np
+          import matplotlib.pyplot as plt
+          
+          a = 0.401
+          b = 42.7e-6
+          N = 1000
+          P = 3.5e7
+          T = 300
+          k = 1.3806503e-23
+          tolerancia = 1e-12
+          
+          def f(V):
+              termo1 = P + a * (N/V)**2
+              termo2 = V - N * b
+              return termo1 * termo2 - k * N * T
+          
+          def df(V):
+              termo1 = P + a * (N/V)**2
+              termo2 = -2 * a * N**2 / V**3
+              return termo1 + (V - N * b) * termo2
+          
+          def bissecção(a_intervalo, b_intervalo, tolerancia):
+              if f(a_intervalo) * f(b_intervalo) >= 0:
+                  raise ValueError("f(a) e f(b) devem ter sinais opostos")
+              Va = a_intervalo
+              Vb = b_intervalo
+              iteracao_contador = 0
+              while (Vb - Va) > tolerancia:
+                  Vm = (Va + Vb) / 2
+                  if f(Vm) == 0:
+                      return Vm, iteracao_contador
+                  elif f(Va) * f(Vm) &lt; 0:
+                      Vb = Vm
+                  else:
+                      Va = Vm
+                  iteracao_contador += 1
+              return (Va + Vb) / 2, iteracao_contador
+          
+          def falsa_posicao(a_intervalo, b_intervalo, tolerancia):
+              if f(a_intervalo) * f(b_intervalo) >= 0:
+                  raise ValueError("f(a) e f(b) devem ter sinais opostos")
+              Va = a_intervalo
+              Vb = b_intervalo
+              iteracao_contador = 0
+              while abs(Vb - Va) > tolerancia:
+                  Vm = (Va * f(Vb) - Vb * f(Va)) / (f(Vb) - f(Va))
+                  if f(Vm) == 0:
+                      return Vm, iteracao_contador
+                  elif f(Va) * f(Vm) &lt; 0:
+                      Vb = Vm
+                  else:
+                      Va = Vm
+                  iteracao_contador += 1
+              return (Va + Vb) / 2, iteracao_contador
+          
+          def newton_raphson(V0, tolerancia):
+              V = V0
+              iteracao_contador = 0
+              while True:
+                  f_V = f(V)
+                  df_V = df(V)
+                  V_novo = V - f_V / df_V
+                  if abs(V_novo - V) &lt; tolerancia:
+                      return V_novo, iteracao_contador
+                  V = V_novo
+                  iteracao_contador += 1
+          
+          Va = 0.0427
+          Vb = 0.0428
+          V0 = 0.04275
+          
+          try:
+              V_bissecção, iteracao_bissecção = bissecção(Va, Vb, tolerancia)
+              print(f'bissecção: V = {V_bissecção:.15f} m³, Iteracoes = {iteracao_bissecção}')
+          except ValueError as e:
+              print(f'Erro na bissecção: {e}')
+          
+          try:
+              V_falsa, iteracao_falsa = falsa_posicao(Va, Vb, tolerancia)
+              print(f'Falsa Posicao: V = {V_falsa:.15f} m³, Iteracoes = {iteracao_falsa}')
+          except ValueError as e:
+              print(f'Erro na falsa posicao: {e}')
+          
+          try:
+              V_newton, iteracao_newton = newton_raphson(V0, tolerancia)
+              print(f'Newton-Raphson: V = {V_newton:.15f} m³, Iteracoes = {iteracao_newton}')
+          except Exception as e:
+              print(f'Erro no Newton-Raphson: {e}')
+          
+          print("\nVerificação dos valores encontrados:")
+          print(f"f(V_bissecção) = {f(V_bissecção):.2e}")
+          print(f"f(V_falsa) = {f(V_falsa):.2e}")
+          print(f"f(V_newton) = {f(V_newton):.2e}")
+          
+          V_media = (V_bissecção + V_falsa + V_newton) / 3
+          delta_V = 0.00000000001
+          V_range_zoom = np.linspace(V_media - delta_V, V_media + delta_V, 1000)
+          f_values_zoom = [f(V) for V in V_range_zoom]
+          
+          plt.figure(figsize=(10, 6))
+          plt.plot(V_range_zoom, f_values_zoom, 'b-', label='f(V)')
+          plt.axhline(y=0, color='k', linestyle='-', alpha=0.3)
+          plt.plot(V_bissecção, f(V_bissecção), 'ro', label=f'Bissecção (V={V_bissecção:.10f})')
+          plt.plot(V_falsa, f(V_falsa), 'go', label=f'Falsa Posição (V={V_falsa:.10f})')
+          plt.plot(V_newton, f(V_newton), 'yo', label=f'Newton-Raphson (V={V_newton:.10f})')
+          plt.grid(True)
+          plt.xlabel('Volume (m³)')
+          plt.ylabel('f(V)')
+          plt.title('Equação de Estado do CO₂ - Zoom nos Resultados')
+          plt.legend()
+          plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+          plt.show()
+          
+          print("\nDiferenças entre os métodos:")
+          print(f"Bissecção - Falsa Posição: {(V_bissecção - V_falsa):.15e} m³")
+          print(f"Bissecção - Newton-Raphson: {(V_bissecção - V_newton):.15e} m³")
+          print(f"Falsa Posição - Newton-Raphson: {(V_falsa - V_newton):.15e} m³")          
+            </code></pre>
+        <p>
+          Observando o método da bissecção, que acaba sendo robusto e garante
+          convergência, já que exige que a função tenha sinais opostos nos
+          extremos do intervalo, porém ele acaba sendo um pouco lento, porque
+          reduz o intervalo de busca de forma uniforme, enquanto o método da
+          falsa posição também trabalha com um intervalo inicial, mas utiliza
+          uma interpolação linear para encontrar uma melhor aproximação da raiz,
+          podendo convergir mais rapidamente e o método Newton-Raphson usa a
+          derivada da função para refinar as aproximações, sendo o mais
+          eficiente quando a estimativa inicial é boa, mas pode falhar se a
+          função não for adequada. Os três métodos forneceram resultados muito
+          próximos, validando a solução encontrada, o gráfico da função também
+          se mostrou um bom alinhamento das raízes obtidas, confirmando a
+          precisão dos cálculos, então conseguimos determinar o volume do gás de
+          forma confiável, explorando diferentes abordagens numéricas.
+        </p>
+      </section>
+
+      <section id="questao9">
+        <h2>Questão 9</h2>
+        <pre><code>
+          import numpy as np
+
+          # Epsilon da máquina
+          eps = np.finfo(float).eps
+          print(f"Epsilon da máquina: {eps}")
+          
+          # Função corrigida f(x) = -1/x³ - 1/x² + 2 (para E = -2)
+          def f(x):
+              return -1/(x**3) - 1/(x**2) + 2
+          
+          # Derivada de f(x): f'(x) = 3/x⁴ + 2/x³
+          def df(x):
+              return 3/(x**4) + 2/(x**3)
+          
+          # Critério de parada
+          def erro_relativo(x_novo, x_velho):
+              return abs(x_novo - x_velho) &lt;= eps * max(1, abs(x_novo))
+          
+          # Método de Bissecção
+          def bissecção(a, b):
+              if f(a) * f(b) >= 0:
+                  raise ValueError("f(a) e f(b) devem ter sinais opostos")
+          
+              x_velho = a
+              iter_count = 0
+          
+              while True:
+                  x_novo = (a + b) / 2
+                  if erro_relativo(x_novo, x_velho):
+                      return x_novo, iter_count
+                  elif f(a) * f(x_novo) &lt; 0:
+                      b = x_novo
+                  else:
+                      a = x_novo
+                  x_velho = x_novo
+                  iter_count += 1
+          
+          # Método da Falsa Posição
+          def falsa_posicao(a, b):
+              if f(a) * f(b) >= 0:
+                  raise ValueError("f(a) e f(b) devem ter sinais opostos")
+          
+              x_velho = a
+              iter_count = 0
+          
+              while True:
+                  x_novo = (a * f(b) - b * f(a)) / (f(b) - f(a))
+                  if erro_relativo(x_novo, x_velho):
+                      return x_novo, iter_count
+                  elif f(a) * f(x_novo) &lt; 0:
+                      b = x_novo
+                  else:
+                      a = x_novo
+                  x_velho = x_novo
+                  iter_count += 1
+          
+          # Método de Newton-Raphson
+          def newton_raphson(x0):
+              x_velho = x0
+              iter_count = 0
+          
+              while True:
+                  x_novo = x_velho - f(x_velho) / df(x_velho)
+                  if erro_relativo(x_novo, x_velho):
+                      return x_novo, iter_count
+                  x_velho = x_novo
+                  iter_count += 1
+          
+          # Intervalo inicial corrigido
+          a = -2.0
+          b = -0.5
+          print(f"f({a}) = {f(a)}, f({b}) = {f(b)}")  # Verifica sinais
+          
+          # Chute inicial para Newton-Raphson
+          x0 = -0.75
+          
+          # Inicializando variáveis como None
+          x_biss = None
+          x_falsa = None
+          x_newton = None
+          
+          # Executando os métodos
+          try:
+              x_biss, iter_biss = bissecção(a, b)
+              print(f"Bissecção: x = {x_biss:.15f}, Iterações = {iter_biss}")
+          except ValueError as e:
+              print(f"Erro na bissecção: {e}")
+          
+          try:
+              x_falsa, iter_falsa = falsa_posicao(a, b)
+              print(f"Falsa Posição: x = {x_falsa:.15f}, Iterações = {iter_falsa}")
+          except ValueError as e:
+              print(f"Erro na falsa posição: {e}")
+          
+          try:
+              x_newton, iter_newton = newton_raphson(x0)
+              print(f"Newton-Raphson: x = {x_newton:.15f}, Iterações = {iter_newton}")
+          except Exception as e:
+              print(f"Erro no Newton-Raphson: {e}")
+          
+          # Verificação apenas para valores definidos
+          print("\nVerificação:")
+          if x_biss is not None:
+              print(f"f(x_biss) = {f(x_biss):.2e}")
+          if x_falsa is not None:
+              print(f"f(x_falsa) = {f(x_falsa):.2e}")
+          if x_newton is not None:
+              print(f"f(x_newton) = {f(x_newton):.2e}")
+            </code></pre>
+        <p>
+          A função de erro relativo foi implementada para garantir que a
+          aproximação da raiz atenda a um critério de precisão baseado no
+          epsilon da máquina, o método da bissecção garante a convergência ao
+          dividir sucessivamente o intervalo onde a raiz está localizada, já
+          método da falsa posição acelera a convergência ao usar uma
+          interpolação linear, mantendo a robustez da bisseção e o método de
+          Newton-Raphson, por utilizar derivadas, pode convergir rapidamente se
+          a aproximação inicial for boa, mas pode falhar caso a função não seja
+          bem comportada.
+        </p>
+      </section>
+
+      <footer>
+        link para Collab e Drive:
+        <a
+          href="https://drive.google.com/drive/folders/1DClCvIA3w7xjVwtnE0LNHbbhwp_aVsjl?usp=drive_link"
+          target="_blank"
+          >Aqui</a
+        >
+      </footer>
     </main>
-</body>
+  </body>
 </html>
